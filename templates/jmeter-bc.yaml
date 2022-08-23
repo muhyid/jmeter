@@ -47,8 +47,8 @@ objects:
         dockerStrategy:
           from:
             kind: ImageStreamTag
-            name: ${APPLICATION_NAME}
-            namespace: vrp-loadtesting
+            name: ubi8-openjdk-11:latest
+            namespace: openshift
         type: Dockerfile
       failedBuildsHistoryLimit: 2
       successfulBuildsHistoryLimit: 1
