@@ -14,8 +14,6 @@ RUN mkdir -p $JMETER_BASE/{tests,results}
 
 # Download latest jmeter binaries from the Apache archive:
 RUN curl -SL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz -o apache-jmeter-${JMETER_VERSION}.tgz
-RUN ls -l
-RUN pwd
 ADD apache-jmeter-${JMETER_VERSION}.tgz $JMETER_BASE
 RUN rm -rf apache-jmeter-${JMETER_VERSION}.tgz
 
