@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-11
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.13
 ENV JMETER_VERSION "5.5"
 
 LABEL jmeter.version=${JMETER_VERSION}
@@ -13,9 +13,8 @@ ENV PATH $JMETER_HOME/bin:$PATH
 RUN mkdir -p $JMETER_BASE/{tests,results}
 
 # Download latest jmeter binaries from the Apache archive:
-RUN curl -SL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz -o apache-jmeter-${JMETER_VERSION}.tgz
-ADD apache-jmeter-${JMETER_VERSION}.tgz $JMETER_BASE
-RUN rm -rf apache-jmeter-${JMETER_VERSION}.tgz
+RUN curl -SL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.zip -o $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.zip
+RUN cd $JMETER_BASE && unzip apache-jmeter-${JMETER_VERSION}.zip && rm -rf apache-jmeter-${JMETER_VERSION}.zip
 
 ############# ARE PLUGINS NEEDED?
 # COPY binaries/JMeterPlugins-ExtrasLibs-1.4.0.zip $JMETER_BASE/apache-jmeter-${JMETER_VERSION}/
@@ -30,7 +29,7 @@ USER 0
 
 RUN chgrp -R 0 $JMETER_BASE \
     && chmod -R g+rw $JMETER_BASE \
-    && chmod  gu+x $JMETER_BASE/run.sh
+    && chmod gu+x $JMETER_BASE/run.sh
 
 #1001 is an arbitrary choice
 USER 1001
