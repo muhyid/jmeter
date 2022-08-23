@@ -48,7 +48,7 @@ objects:
           from:
             kind: ImageStreamTag
             name: ubi8-openjdk-11:1.14-3
-            namespace: openshift
+            namespace: vrp-loadtesting
         type: Dockerfile
       failedBuildsHistoryLimit: 2
       successfulBuildsHistoryLimit: 1
