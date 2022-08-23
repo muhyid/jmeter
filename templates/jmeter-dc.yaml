@@ -38,12 +38,6 @@ objects:
         labels:
           app: ${APPLICATION_NAME}
       spec:
-        nodeSelector:
-          node-role.kubernetes.io/odh: ''
-        tolerations:
-          - effect: NoSchedule
-            key: node-role.kubernetes.io/odh
-            operator: Exists 
         containers:
           - 
             # args:
