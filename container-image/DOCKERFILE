@@ -20,8 +20,9 @@ RUN mkdir -p $JMETER_BASE/{tests,results}
 
 # Option 2: If you don't have internet access from the build machine use COPY instead of curl. In this case, you will need the binaries in the same folder as this Dockerfile.
 COPY apache-jmeter-${JMETER_VERSION}.tgz $JMETER_BASE
-RUN tar -xvf $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.tgz -C $JMETER_BASE \
-    && rm -rf $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.tgz
+RUN ls -l $JMETER_BASE
+RUN tar -xvf $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.tgz -C $JMETER_BASE 
+RUN rm -rf $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.tgz
 
 ############# ARE PLUGINS NEEDED?
 # COPY binaries/JMeterPlugins-ExtrasLibs-1.4.0.zip $JMETER_BASE/apache-jmeter-${JMETER_VERSION}/
