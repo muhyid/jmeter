@@ -47,7 +47,7 @@ objects:
         dockerStrategy:
           from:
             kind: ImageStreamTag
-            name: openjdk-11:latest
+            name: openjdk-11:1.13
             namespace: vrp-loadtesting
         type: Dockerfile
       failedBuildsHistoryLimit: 2
