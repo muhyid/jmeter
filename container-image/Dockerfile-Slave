@@ -1,0 +1,42 @@
+FROM registry.access.redhat.com/ubi8/openjdk-11:1.13
+ENV JMETER_VERSION "5.5"
+ENV PROMETHEUS_PLUGIN_VERSION="0.6.0"
+
+LABEL jmeter.version=${JMETER_VERSION}
+
+# Set JMeter base and home
+ENV JMETER_BASE /opt/jmeter
+ENV JMETER_HOME $JMETER_BASE/apache-jmeter-${JMETER_VERSION}
+# Add JMeter to the Path
+ENV PATH $JMETER_HOME/bin:$PATH
+
+# Create jmeter directory with tests and results folder and install JMeter
+RUN mkdir -p $JMETER_BASE/{tests,results}
+
+# Download latest jmeter binaries from the Apache archive:
+RUN curl -SL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.zip -o $JMETER_BASE/apache-jmeter-${JMETER_VERSION}.zip
+RUN cd $JMETER_BASE && unzip apache-jmeter-${JMETER_VERSION}.zip && rm -rf apache-jmeter-${JMETER_VERSION}.zip
+
+RUN curl -SL https://github.com/johrstrom/jmeter-prometheus-plugin/releases/download/0.6.0/jmeter-prometheus-plugin-${PROMETHEUS_PLUGIN_VERSION}.jar -o $JMETER_HOME/lib/ext/jmeter-prometheus-plugin-${PROMETHEUS_PLUGIN_VERSION}.jar
+
+############# ARE PLUGINS NEEDED?
+# COPY binaries/JMeterPlugins-ExtrasLibs-1.4.0.zip $JMETER_BASE/apache-jmeter-${JMETER_VERSION}/
+
+# Set working directory
+WORKDIR $JMETER_BASE
+
+USER 0
+
+RUN chgrp -R 0 $JMETER_BASE \
+    && chmod -R g+rw $JMETER_BASE 
+
+#1001 is an arbitrary choice
+USER 1001
+
+EXPOSE 1099 50000
+
+ENTRYPOINT $JMETER_HOME/bin/jmeter-server \
+-Dserver.rmi.ssl.disable=true \
+-Dserver.rmi.localport=50000 \
+-Dserver_port=1099
+
